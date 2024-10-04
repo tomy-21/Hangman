@@ -139,6 +139,7 @@ func playHangman(wordToGuess, revealedWord string) {
 	attempts := 0
 	maxAttempts := len(hangmanStages) - 1
 	guessedLetters := make(map[rune]bool)
+	incorrectLetters := []rune{} // Stocker les lettres incorrectes
 	wordRunes := []rune(wordToGuess)
 	revealedRunes := []rune(revealedWord)
 
@@ -146,6 +147,10 @@ func playHangman(wordToGuess, revealedWord string) {
 		fmt.Println(hangmanStages[attempts])
 		fmt.Printf("Tentatives restantes: %d\n", maxAttempts-attempts)
 		fmt.Printf("Mot actuel: %s\n", string(revealedRunes))
+
+		// Afficher les lettres incorrectes déjà devinées
+		showIncorrectGuesses(incorrectLetters)
+
 		fmt.Print("Entrez une lettre: ")
 
 		var guess string
@@ -174,6 +179,7 @@ func playHangman(wordToGuess, revealedWord string) {
 
 		if !found {
 			attempts++
+			incorrectLetters = append(incorrectLetters, letter) // Ajouter à la liste des lettres incorrectes
 			fmt.Println("Lettre incorrecte!")
 		} else {
 			fmt.Println("Lettre correcte!")
@@ -189,5 +195,12 @@ func playHangman(wordToGuess, revealedWord string) {
 			fmt.Printf("Désolé, vous avez perdu. Le mot était: %s\n", wordToGuess)
 			return
 		}
+	}
+}
+
+// showIncorrectGuesses affiche les lettres incorrectes déjà essayées
+func showIncorrectGuesses(incorrectLetters []rune) {
+	if len(incorrectLetters) > 0 {
+		fmt.Printf("Lettres incorrectes déjà essayées: %s\n", string(incorrectLetters))
 	}
 }
